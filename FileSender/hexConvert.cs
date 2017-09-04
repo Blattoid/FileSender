@@ -32,9 +32,30 @@ namespace hexConverter
     }
     class toHex
     {
+        public static bool IsLinux
+        {
+            get
+            {
+                int p = (int)Environment.OSVersion.Platform;
+                return (p == 4) || (p == 6) || (p == 128);
+            }
+        }
+        public static string DecideWhichSlash()
+        {
+            //Extremely simple; checks is IsLinux is true and returns the appropriate slash combination. This is to heed the filesystem structures.
+            if (global_variables.IsLinux)
+            {
+                return "/";
+            }
+            else
+            {
+                return "\\";
+            }
+        }
+
         public static void fileToHex(string Filename)
         {
-            string filepath = Directory.GetCurrentDirectory() + Program.DecideWhichSlash() + Filename;
+            string filepath = Directory.GetCurrentDirectory() + DecideWhichSlash() + Filename;
             //Get number of characters in file
             var fileInfo = new FileInfo(filepath);
             long filelength = fileInfo.Length;
