@@ -8,11 +8,6 @@ namespace hexConverter
 {
     class fromHex
     {
-        public static void convertfromHex(string filename)
-        {
-            var stream = new FileStream(filename, FileMode.Open, FileAccess.Read);
-            //convertHexStringToFile();
-        }
         public static void convertHexStringToFile(string hexdata, FileStream output)
         {
             var twoCharacterBuffer = new StringBuilder();
