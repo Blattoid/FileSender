@@ -54,6 +54,15 @@ namespace Transfer_File_Across_Network
             }
 
             //Let us begin.
+            //Fancy title
+            Console.WriteLine(@"___________.__.__           _________                  .___            ");
+            Console.WriteLine(@"\_   _____/|__|  |   ____  /   _____/ ____   ____    __| _/___________ ");
+            Console.WriteLine(@" |    __)  |  |  | _/ __ \ \_____  \_/ __ \ /    \  / __ |/ __ \_  __ \");
+            Console.WriteLine(@" |     \   |  |  |_\  ___/ /        \  ___/|   |  \/ /_/ \  ___/|  | \/");
+            Console.WriteLine(@" \___  /   |__|____/\___  >_______  /\___  >___|  /\____ |\___  >__|   ");
+            Console.WriteLine(@"     \/                 \/        \/     \/     \/      \/    \/       ");
+            Console.WriteLine(); //Newline to sparate title from instructions.
+
             Console.Write("Do you wish to send or recieve? (S/R) ");
             string usrinput = Convert.ToString(Console.ReadKey().KeyChar); //Read key input, then convert from char to string.
             Console.Write(Environment.NewLine); //newline
