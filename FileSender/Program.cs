@@ -78,7 +78,7 @@ namespace Transfer_File_Across_Network
                 {
                     string file = Path.GetFileName(temp);
                     Console.WriteLine(file);
-                } 
+                }
                 Console.Write("\nPlease enter file name to send: ");
                 usrinput = Console.ReadLine();
 
@@ -136,27 +136,31 @@ namespace Transfer_File_Across_Network
     {
         public static void Send(string target_file)
         {
-            Console.WriteLine("Sending file '" + target_file + "' to '" + Convert.ToString(global_variables.server_addr) + "' on port " + Convert.ToString(global_variables.server_port) + "");
+            Console.WriteLine("Preparing file for sending...");
             //toHex calls from hexConvert.cs#
             toHex.fileToHex(target_file); //convert target_file to hex
 
             //Create data stream
             string tempfile = (Directory.GetCurrentDirectory() + Program.DecideWhichSlash() + target_file + ".send.temp");
 
-            TcpClients.Upload(global_variables.server_addr, global_variables.server_port, tempfile); //convert target_file to hex then send it to server
+            Console.WriteLine("Uploading to '" + global_variables.server_addr + "' on port " + global_variables.server_port + ".");
+            TcpClients.Upload(global_variables.server_addr, global_variables.server_port, tempfile); //load converted file then send it to server
+
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.WriteLine("Cleaning up...");
 
             //cleanup the temp file
             try { File.Delete(tempfile); }
             catch (IOException)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Error cleaning up temporary file '"+tempfile+"'.");
+                Console.WriteLine("Error cleaning up temporary file '" + tempfile + "'. You may manually remove this file.");
             }
         }
         public static void Recv(string destination_file)
         {
 
-            Console.WriteLine("Destination file is '" + destination_file + "'.");
+            Console.WriteLine("Destination file is '" + destination_file + "'. Waiting for connection...");
             string tempfile = Directory.GetCurrentDirectory() + Program.DecideWhichSlash() + destination_file + ".recv.temp";
 
             //Recieve file

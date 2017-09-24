@@ -12,49 +12,52 @@ namespace fileTransfer
         //Define function Upload()
         public static void Upload(String server, Int32 Port, string Filename)
         {
-            try{
-
-            int bufferSize = 1024;
-            byte[] buffer = null;
-            byte[] header = null;
-
-
-            FileStream fs = new FileStream(Filename, FileMode.Open);
-
-            int bufferCount = Convert.ToInt32(Math.Ceiling((double)fs.Length / (double)bufferSize));
-
-
-
-            TcpClient tcpClient = new TcpClient(server, Port);
-            tcpClient.SendTimeout = 600000;
-            tcpClient.ReceiveTimeout = 600000;
-
-            string headerStr = "Content-length:" + fs.Length.ToString() + "\r\n";
-            header = new byte[bufferSize];
-            Array.Copy(Encoding.ASCII.GetBytes(headerStr), header, Encoding.ASCII.GetBytes(headerStr).Length);
-
-            tcpClient.Client.Send(header);
-
-            for (int i = 0; i < bufferCount; i++)
+            try
             {
-                buffer = new byte[bufferSize];
-                int size = fs.Read(buffer, 0, bufferSize);
 
-                tcpClient.Client.Send(buffer, size, SocketFlags.Partial);
+                int bufferSize = 1024;
+                byte[] buffer = null;
+                byte[] header = null;
 
+
+                FileStream fs = new FileStream(Filename, FileMode.Open);
+
+                int bufferCount = Convert.ToInt32(Math.Ceiling((double)fs.Length / (double)bufferSize));
+
+
+
+                TcpClient tcpClient = new TcpClient(server, Port);
+                tcpClient.SendTimeout = 600000;
+                tcpClient.ReceiveTimeout = 600000;
+
+                string headerStr = "Content-length:" + fs.Length.ToString() + "\r\n";
+                header = new byte[bufferSize];
+                Array.Copy(Encoding.ASCII.GetBytes(headerStr), header, Encoding.ASCII.GetBytes(headerStr).Length);
+
+                tcpClient.Client.Send(header);
+
+                for (int i = 0; i < bufferCount; i++)
+                {
+                    buffer = new byte[bufferSize];
+                    int size = fs.Read(buffer, 0, bufferSize);
+
+                    tcpClient.Client.Send(buffer, size, SocketFlags.Partial);
+
+                }
+
+                tcpClient.Client.Close();
+
+                fs.Close();
+                Console.WriteLine("Send complete.");
             }
 
-            tcpClient.Client.Close();
-
-            fs.Close();
-            }
 
             catch (Exception e)
             {
-                
+
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Error sending file. " + e.Message);
-                
+
             }
         }
 
@@ -102,9 +105,12 @@ namespace fileTransfer
 
                 FileStream fs = new FileStream(filename, FileMode.OpenOrCreate);
 
+                Console.WriteLine("Recieving data..."); //At this point data is being sent. Let's inform the user of this :)
                 while (filesize > 0)
                 {
                     buffer = new byte[bufferSize];
+
+                    //recieve data into buffer
 
                     int size = socket.Receive(buffer, SocketFlags.Partial);
 
