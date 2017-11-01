@@ -37,7 +37,8 @@ namespace hexConverter
         }
         public static string DecideWhichSlash()
         {
-            //Extremely simple; checks is IsLinux is true and returns the appropriate slash combination. This is to heed the filesystem structures.
+            //Extremely simple; checks is IsLinux is true and returns the appropriate slash combination. 
+            //This is used in construction of filepaths, where the slashes mean different things.
             if (global_variables.IsLinux)
             {
                 return "/";

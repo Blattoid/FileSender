@@ -119,6 +119,7 @@ namespace fileTransfer
                     filesize -= size;
                 }
 
+                Console.WriteLine("Recieved file.");
 
                 fs.Close();
             }

@@ -13,6 +13,7 @@ namespace Transfer_File_Across_Network
         public static int use_port;
 
         //Detects if we are running on Linux. This is referenced by DecideWhichSlash().
+        //This is used to allow for compatibility on Linux machines for if the program is being run by something like mono.
         public static bool IsLinux
         {
             get
@@ -27,14 +28,8 @@ namespace Transfer_File_Across_Network
         public static string DecideWhichSlash()
         {
             //Extremely simple; checks is IsLinux is true and returns the appropriate slash combination. This is to heed the filesystem structures.
-            if (global_variables.IsLinux)
-            {
-                return "/";
-            }
-            else
-            {
-                return "\\";
-            }
+            if (global_variables.IsLinux) { return "/"; } //linux
+            else { return "\\"; } //windows (two instead of one because character escaping)
         }
         static void Main(string[] args)
         {
@@ -84,7 +79,7 @@ namespace Transfer_File_Across_Network
 
                 if (File.Exists(usrinput))
                 {
-                    //Check if file is over 715MB since that is the limit for loading files into memory. If so, report the file is too big. If not, continue as planned.
+                    //Check if file is over 715MB since that is the limit for tcp.Client.Send. If so, report the file is too big and don't send. If not, continue as planned.
                     Int64 fileSize = new FileInfo(usrinput).Length;
                     if (fileSize < 715500000) { Actions.Send(usrinput); }
                     else
